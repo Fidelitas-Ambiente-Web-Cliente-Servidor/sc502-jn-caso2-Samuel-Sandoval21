@@ -1,0 +1,40 @@
+body {
+    background-color: #f5f5f5;
+}
+
+.card {
+    transition: transform 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.btn-solicitar {
+    width: 100%;
+}
+
+.badge {
+    font-size: 0.9em;
+    padding: 5px 10px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.loader {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+#mensaje {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    min-width: 200px;
+}

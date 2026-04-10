@@ -5,7 +5,6 @@ require_once __DIR__ . '/../models/User.php';
 
 class UserController
 {
-
     private $model;
 
     public function __construct()
@@ -63,3 +62,4 @@ class UserController
         echo json_encode(['response' => "00", 'message' => "Sesión cerrada"]);
     }
 }
+?>

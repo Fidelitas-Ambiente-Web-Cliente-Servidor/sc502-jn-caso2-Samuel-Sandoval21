@@ -13,17 +13,24 @@ $page = $_GET['page'] ?? 'login';
 // ========== RUTAS GET OBTENER DATOS ==========
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    // Obtener listado de talleres
+    // Obtener listado de talleres disponibles
     if ($_GET['option'] ?? "" == "talleres_json") {
         $taller = new TallerController();
         $taller->getTalleresJson();
         exit;
     }
 
-    // Obtener solicitudes pendientes
+    // Obtener solicitudes pendientes (para admin)
     if ($_GET['option'] ?? "" == "solicitudes_json") {
         $admin = new AdminController();
-        //$admin->getSolicitudesJson();
+        $admin->getSolicitudesJson();
+        exit;
+    }
+    
+    // Obtener mis solicitudes (para usuario)
+    if ($_GET['option'] ?? "" == "mis_solicitudes_json") {
+        $taller = new TallerController();
+        $taller->getMisSolicitudesJson();
         exit;
     }
 }
@@ -85,13 +92,16 @@ switch ($page) {
         $auth = new UserController();
         $auth->logout();
         break;
+        
     case "registro":
         $auth = new UserController();
         $auth->showRegistro();
         break;
+        
     case "login":
     default:
         $auth = new UserController();
         $auth->showLogin();
         break;
 }
+?>

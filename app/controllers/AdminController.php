@@ -21,42 +21,54 @@ class AdminController
     {
         if (!isset($_SESSION['id']) || $_SESSION['rol'] !== 'admin') {
             header('Location: index.php?page=login');
-            return;
+            exit();
         }
         require __DIR__ . '/../views/admin/solicitudes.php';
     }
     
-    // Aprobar solicitud
+    public function getSolicitudesJson()
+    {
+        if (!isset($_SESSION['id']) || $_SESSION['rol'] !== 'admin') {
+            echo json_encode(['success' => false, 'message' => 'No autorizado']);
+            return;
+        }
+        
+        $solicitudes = $this->solicitudModel->obtenerPendientes();
+        
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true, 'data' => $solicitudes]);
+    }
+    
     public function aprobar()
     {
         if (!isset($_SESSION['id']) || $_SESSION['rol'] !== 'admin') {
-            echo json_encode(['success' => false, 'error' => 'No autorizado']);
+            echo json_encode(['success' => false, 'message' => 'No autorizado']);
             return;
         }
         
         $solicitudId = $_POST['id_solicitud'] ?? 0;
         
-        try {
-            
-            echo json_encode(['success' => true]);
-            
-        } catch (Exception $e) {
-            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+        if ($this->solicitudModel->aprobar($solicitudId)) {
+            echo json_encode(['success' => true, 'message' => 'Solicitud aprobada']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Error al aprobar']);
         }
     }
+    
     public function rechazar()
     {
         if (!isset($_SESSION['id']) || $_SESSION['rol'] !== 'admin') {
-            echo json_encode(['success' => false, 'error' => 'No autorizado']);
+            echo json_encode(['success' => false, 'message' => 'No autorizado']);
             return;
         }
         
         $solicitudId = $_POST['id_solicitud'] ?? 0;
         
         if ($this->solicitudModel->rechazar($solicitudId)) {
-            echo json_encode(['success' => true]);
+            echo json_encode(['success' => true, 'message' => 'Solicitud rechazada']);
         } else {
-            echo json_encode(['success' => false, 'error' => 'Error al rechazar']);
+            echo json_encode(['success' => false, 'message' => 'Error al rechazar']);
         }
     }
 }
+?>
